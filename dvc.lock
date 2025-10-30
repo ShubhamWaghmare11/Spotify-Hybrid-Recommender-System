@@ -16,3 +16,71 @@ stages:
       hash: md5
       md5: ad73ab9b7c97fed0f3cc26fc9b24f8c6
       size: 13712182
+  transform_data:
+    cmd: python content_based_filtering.py
+    deps:
+    - path: content_based_filtering.py
+      hash: md5
+      md5: e3ebbcce925e5d38325cad006003c06e
+      size: 6076
+    - path: data/cleaned_data.csv
+      hash: md5
+      md5: ad73ab9b7c97fed0f3cc26fc9b24f8c6
+      size: 13712182
+    - path: data_cleaning.py
+      hash: md5
+      md5: 2769b36b02ca0650e365de7d1aba1b2f
+      size: 2096
+    outs:
+    - path: data/transformed_data.npz
+      hash: md5
+      md5: 7f0f6c4dfaa26361495ebb258aa0235c
+      size: 4523498
+    - path: transformer.joblib
+      hash: md5
+      md5: 399e8d2474e4a4afa0baab666ec07c13
+      size: 135261
+  interaction_data:
+    cmd: python collaborative_filtering.py
+    deps:
+    - path: collaborative_filtering.py
+      hash: md5
+      md5: ff2c2e2018890d93db558ccf430c0e8e
+      size: 4174
+    - path: data/User Listening History.csv
+      hash: md5
+      md5: 3a12e713844195171c7040c051d6d4ae
+      size: 602515573
+    - path: data/cleaned_data.csv
+      hash: md5
+      md5: ad73ab9b7c97fed0f3cc26fc9b24f8c6
+      size: 13712182
+    outs:
+    - path: data/collab_filtered_data.csv
+      hash: md5
+      md5: a0a00dc447525323f6da922ee7138cc0
+      size: 8259927
+    - path: data/interaction_matrix.npz
+      hash: md5
+      md5: 2bbd6d6251b8fd06a02a3300d372a2a0
+      size: 32311115
+    - path: data/track_ids.npy
+      hash: md5
+      md5: 2b98965823457fdb6526d3c5df182d03
+      size: 640016
+  transformed_filtered_data:
+    cmd: python transform_filtered_data.py
+    deps:
+    - path: data/collab_filtered_data.csv
+      hash: md5
+      md5: a0a00dc447525323f6da922ee7138cc0
+      size: 8259927
+    - path: transform_filtered_data.py
+      hash: md5
+      md5: 34a4f01e26feb9fb5ecdbb40d493c233
+      size: 833
+    outs:
+    - path: data/transformed_hybrid_data.npz
+      hash: md5
+      md5: d6416cccc6e6057750f7a7a59ebe6ef1
+      size: 2977131
