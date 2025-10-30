@@ -31,15 +31,19 @@ jobs:
         run: |
           dvc pull
 
-      - name: Run Appllication
+      - name: Run Streamlit Application
         run: |
-          nohup streamlit run app.py --server.port 8000 
-          sleep 30
+          nohup streamlit run app.py --server.port 8000 > streamlit.log 2>&1 &
+          echo $! > streamlit_pid.txt
+          sleep 15
 
-      - name: Test App
+      - name: Run Tests
+        run: pytest test_app.py -v
+        env:
+          STREAMLIT_SERVER_URL: http://localhost:8000
+
+      - name: Stop Streamlit Application
+        if: always()
         run: |
-          pytest test_app.py
-      
-      - name: Stop Streamlit app
-        run: |
-          pkill -f "streamlit run"
+          kill $(cat streamlit_pid.txt) || echo "No Streamlit process found"
+          rm -f streamlit_pid.txt

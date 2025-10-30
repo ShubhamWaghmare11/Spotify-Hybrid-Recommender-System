@@ -54,29 +54,17 @@ st.markdown("""
 
 
 
-# load the data
-cleaned_data_path = "data/cleaned_data.csv"
-songs_data = pd.read_csv(cleaned_data_path)
+@st.cache_data
+def load_data():
+    songs_data = pd.read_csv("data/cleaned_data.csv")
+    transformed_data = load_npz("data/transformed_data.npz")
+    track_ids = load("data/track_ids.npy", allow_pickle=True)
+    filtered_data = pd.read_csv("data/collab_filtered_data.csv")
+    interaction_matrix = load_npz("data/interaction_matrix.npz")
+    transformed_hybrid_data = load_npz("data/transformed_hybrid_data.npz")
+    return songs_data, transformed_data, track_ids, filtered_data, interaction_matrix, transformed_hybrid_data
 
-# load the transformed data
-transformed_data_path = "data/transformed_data.npz"
-transformed_data = load_npz(transformed_data_path)
-
-# load the track ids
-track_ids_path = "data/track_ids.npy"
-track_ids = load(track_ids_path,allow_pickle=True)
-
-# load the filtered songs data
-filtered_data_path = "data/collab_filtered_data.csv"
-filtered_data = pd.read_csv(filtered_data_path)
-
-# load the interaction matrix
-interaction_matrix_path = "data/interaction_matrix.npz"
-interaction_matrix = load_npz(interaction_matrix_path)
-
-# load the transformed hybrid data
-transformed_hybrid_data_path = "data/transformed_hybrid_data.npz"
-transformed_hybrid_data = load_npz(transformed_hybrid_data_path)
+songs_data, transformed_data, track_ids, filtered_data, interaction_matrix, transformed_hybrid_data = load_data()
 
 
 # ---------- HEADER ----------
